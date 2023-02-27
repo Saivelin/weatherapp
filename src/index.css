@@ -1,13 +1,65 @@
+* {
+  margin: 0;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.App {
+  min-height: 100vh;
+  min-width: 100%;
+  background-repeat: unset;
+  background-size: cover;
+}
+
+.clockAndMoreItem {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  height: 75vh;
+  color: white;
+  font-size: 7em;
+}
+
+.mainWhether {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 4%;
+  padding: 0 7.5% 0 7.5%;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px);
+  border-radius: 40px 40px 0 0;
+  height: 25vh;
+}
+
+.mainWhether__item {
+  /* background: rgba(255, 255, 255, 0.25);
+backdrop-filter: blur(4px);
+border-radius: 10px; */
+  border-left: 1px solid rgba(255, 255, 255, 0.384);
+  border-right: 1px solid rgba(255, 255, 255, 0.384);
+  padding: 4% 6% 4% 6%;
+  text-align: left;
+  color: white;
+  display: grid;
+  row-gap: 20px;
+}
+
+.mainWhether__item-header {
+  font-size: 2.4em;
+}
+
+.mainWhether__item-about {
+  font-size: 1.1em;
 }
