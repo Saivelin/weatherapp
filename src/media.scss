@@ -1,0 +1,44 @@
+@media (max-width: 985px) {
+    .mainWhether__item-header {
+        font-size: 1.5em;
+    }
+    .mainWhether__item-about{
+        font-size: 1em;
+    }
+}
+@media (max-width: 870px){
+    .mainWhether{
+        padding: 0;
+    }
+}
+@media (max-width: 735px){
+    .mainWhether{
+        height: 35vh;
+        grid-template-columns: 1fr 1fr;
+        padding: 0 7.5%;
+        backdrop-filter: blur(0px);
+    }
+    .clockAndMoreItem{
+        height: 65vh;
+    }
+}
+@media (max-width: 540px){
+    .mainWhether{
+        padding: 0;
+    }
+}
+@media (max-width: 450px){
+    .mainWhether__item-header {
+        font-size: 2.5em;
+    }
+    .mainWhether__item-about{
+        font-size: 1.4em;
+    }
+    .mainWhether{
+        grid-template-columns: 1fr ;
+        height: 80vh;
+    }
+    .clockAndMoreItem{
+        height: 20vh;
+    }
+}

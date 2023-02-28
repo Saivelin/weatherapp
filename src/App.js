@@ -1,5 +1,6 @@
 import './index.scss';
 import './main.scss';
+import './media.scss';
 import React, { useState, useRef, useEffect } from 'react';
 import Moment from 'react-moment';
 import { animated, useSpring } from '@react-spring/web'
