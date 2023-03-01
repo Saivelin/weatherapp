@@ -6,6 +6,8 @@ import Moment from 'react-moment';
 import { animated, useSpring } from '@react-spring/web'
 import Select from 'react-select'
 import axios from 'axios';
+import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
+
 
 function App() {
 
@@ -17,7 +19,15 @@ function App() {
     var form = useRef();
 
     const [country, setCountry] = useState("");
-    const [city, setCity] = useState("");
+    const [city, setCity] = useState("London");
+    const [temp, setTemp] = useState()
+    const [tempAbout, setTempAbout] = useState()
+    const [params, setParams] = useState([])
+    const [loadErr, setLoadErr] = useState()
+    const [lon, setLon] = useState(0)
+    const [lat, setLat] = useState(0)
+
+    const [isLoaded, setIsLoaded] = useState();
 
     const [auth, setAuth] = useState(false);
 
@@ -42,13 +52,30 @@ function App() {
             onRest: (e) => {
                 form.current.setAttribute('style', "display: none")
                 setAuth(true)
+                setIsLoaded(false)
             }
         })
     }
 
     useEffect(() => {
-        let response = axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=0460243223e8e48d98b61638a08e5a5d`)
-        console.log(response)
+        setAuth(false)
+        if (isLoaded == false) {
+            let req = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=0460243223e8e48d98b61638a08e5a5d`
+            console.log(req)
+            let weather = axios.get(req)
+            weather.then((el) => {
+                console.log(el)
+                console.log(el.data)
+                setTemp(String(Math.floor(el.data.main.temp - 273)) + "°C")
+                setTempAbout("Feels like: " + String(Math.floor(el.data.main.feels_like - 273)) + "°C")
+                setParams([...params, { title: el.data.weather[0].main, desc: el.data.weather[0].description }, { title: "Wind", desc: String(el.data.wind.speed) + " m/sec" }, { title: "Cloud cover", desc: String(el.data.clouds.all) + "%" }])
+                setIsLoaded(true)
+                setAuth(true)
+            }).catch((el) => {
+                console.log(el.response.status)
+                setAuth(false)
+            })
+        }
     }, [auth]);
 
     return (
@@ -56,13 +83,6 @@ function App() {
             <animated.div className='authorization' ref={form} style={{ ...closeAuthAnim }}>
                 <form method='POST' className='authorization__form' onSubmit={handleSubmit}>
                     <input type="text" name="city" placeholder='Your city' value={city} onChange={(e) => { setCity(e.target.value) }} className='authorization__input' />
-                    <input type="text" name="country" placeholder='Your country' value={country} onChange={(e) => { setCountry(e.target.value) }} className='authorization__input' />
-                    {/* <Select className='' options={citys} styles={{ backgroundColor: "black", }} /> */}
-                    {/* <select className='authorization__select' >
-                        {citys.map((el) => {
-                            return <option value={el.value}>{el.label}</option>
-                        })}
-                    </select> */}
                     <button type="submit" className='authorization__btn'>Submit</button>
                 </form>
             </animated.div>
@@ -70,24 +90,42 @@ function App() {
                 <div className='clockAndMoreItem'>
                     <Moment format='HH:mm' interval={1000} />
                 </div>
-                <div className='mainWhether'>
-                    <div className='mainWhether__item'>
-                        <h2 className='mainWhether__item-header'>-25*</h2>
-                        <p className='mainWhether__item-about'>Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem </p>
+                {isLoaded ?
+                    <div className='mainWhether'>
+
+                        <div className='mainWhether__item'>
+                            <h2 className='mainWhether__item-header'>{temp}</h2>
+                            <p className='mainWhether__item-about'>{tempAbout}</p>
+                        </div>
+                        {params.map((el, i) => {
+                            return (
+                                <div className='mainWhether__item' key={i}>
+                                    <h2 className='mainWhether__item-header'>{el.title}</h2>
+                                    <p className='mainWhether__item-about'>{el.desc}</p>
+                                </div>
+                            )
+                        })}
                     </div>
-                    <div className='mainWhether__item'>
-                        <h2 className='mainWhether__item-header'>-25*</h2>
-                        <p className='mainWhether__item-about'>Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem </p>
+                    :
+                    <div className='mainWhether'>
+                        <div>
+                            <SkeletonText noOfLines={1} spacing="4" skeletonHeight={"10"} style={{ marginBottom: "10px" }} className='mainWhether__item-header'>-25*</SkeletonText>
+                            <SkeletonText noOfLines={4} spacing="4" skeletonHeight={"2"} className='mainWhether__item-about'>Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem </SkeletonText>
+                        </div>
+                        <div>
+                            <SkeletonText noOfLines={1} spacing="4" skeletonHeight={"10"} style={{ marginBottom: "10px" }} className='mainWhether__item-header'>-25*</SkeletonText>
+                            <SkeletonText noOfLines={4} spacing="4" skeletonHeight={"2"} className='mainWhether__item-about'>Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem </SkeletonText>
+                        </div>
+                        <div>
+                            <SkeletonText noOfLines={1} spacing="4" skeletonHeight={"10"} style={{ marginBottom: "10px" }} className='mainWhether__item-header'>-25*</SkeletonText>
+                            <SkeletonText noOfLines={4} spacing="4" skeletonHeight={"2"} className='mainWhether__item-about'>Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem </SkeletonText>
+                        </div>
+                        <div>
+                            <SkeletonText noOfLines={1} spacing="4" skeletonHeight={"10"} style={{ marginBottom: "10px" }} className='mainWhether__item-header'>-25*</SkeletonText>
+                            <SkeletonText noOfLines={4} spacing="4" skeletonHeight={"2"} className='mainWhether__item-about'>Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem </SkeletonText>
+                        </div>
                     </div>
-                    <div className='mainWhether__item'>
-                        <h2 className='mainWhether__item-header'>-25*</h2>
-                        <p className='mainWhether__item-about'>Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem </p>
-                    </div>
-                    <div className='mainWhether__item'>
-                        <h2 className='mainWhether__item-header'>-25*</h2>
-                        <p className='mainWhether__item-about'>Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem </p>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     );
