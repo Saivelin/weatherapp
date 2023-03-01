@@ -79,7 +79,7 @@ function App() {
     }, [auth]);
 
     return (
-        <div className="App" style={{ background: "url('/background-day.jpg')", backgroundSize: "cover" }}>
+        <div className="App" style={{ background: "url('./background-day.jpg')", backgroundSize: "cover" }}>
             <animated.div className='authorization' ref={form} style={{ ...closeAuthAnim }}>
                 <form method='POST' className='authorization__form' onSubmit={handleSubmit}>
                     <input type="text" name="city" placeholder='Your city' value={city} onChange={(e) => { setCity(e.target.value) }} className='authorization__input' />
